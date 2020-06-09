@@ -6,7 +6,8 @@ const inventory = {
 };
 
 const shelvesGridSize = 5;
-let slotsLeft = 5 ** 2;
+let slotsLeft = shelvesGridSize ** 2;
+
 const shelves = [];
 for (let i = 0; i < shelvesGridSize; i += 1) {
   const shelf = [];
@@ -18,15 +19,14 @@ for (let i = 0; i < shelvesGridSize; i += 1) {
   shelves.push(shelf);
 }
 
-// initialize inventory
+// set inventory
 const setInventory = () => {
   for (const counter in inventory) {
     $(`.candy-counter[data-type=${counter}]`).text(inventory[counter]);
   }
 };
-setInventory();
 
-// initialize shelves
+// set shelves
 const setShelves = () => {
   let shelvesDOM = '';
 
@@ -45,34 +45,32 @@ const setShelves = () => {
   });
 
   $('#shelves').html(shelvesDOM);
-
-  // On Click Handler - Remove candy from shelf
-  $('.shelf').on('click', function (evt) {
-    // console.log('clicked on shelf candy: ', $(this), $(this).data());
-    const candyType = $(evt.target).data('type');
-
-    // if there's a candy present, then remove it
-    if (candyType) {
-      // increment slots left
-      slotsLeft += 1;
-
-      // increment counter of candy
-      inventory[candyType] += 1;
-      setInventory();
-
-      // remove candy from slot
-      shelves[this.rowIndex][evt.toElement.cellIndex] = '-';
-      setShelves();
-    }
-  });
+  $('.shelf').on('click', candyRemove);
 };
-setShelves();
 
 // Helper Methods
 
+// On Click Handler - Remove candy from shelf
+const candyRemove = function (evt) {
+  const candyType = $(evt.target).data('type');
+
+  // if there's a candy in the slot, then remove it
+  if (candyType) {
+    // increment slots left
+    slotsLeft += 1;
+
+    // increment counter of candy inventory
+    inventory[candyType] += 1;
+    setInventory();
+
+    // remove candy from slot
+    shelves[this.rowIndex][evt.toElement.cellIndex] = '-';
+    setShelves();
+  }
+};
+
 // On Click Handler - Add candy to shelf
-$('.candy-item').on('click', function () {
-  // console.log('clicked on inventory candy: ', $(this), $(this).data());
+const candyAdd = function () {
   const candyType = $(this).data('type');
 
   // if selected candy is available and the shelves aren't full, then add it
@@ -80,11 +78,11 @@ $('.candy-item').on('click', function () {
     // decrement slots left
     slotsLeft -= 1;
 
-    // decrement counter of candy
+    // decrement counter of candy inventory
     inventory[candyType] -= 1;
     setInventory();
 
-    // place candy in first available table cell
+    // add candy in first available slot
     loopShelf: for (let i = 0; i < shelves.length; i += 1) {
       loopSlot: for (let j = 0; j < shelves[i].length; j += 1) {
         if (shelves[i][j] === '-') {
@@ -95,4 +93,9 @@ $('.candy-item').on('click', function () {
     }
     setShelves();
   }
-});
+};
+
+// initialize inventory and shelves
+setInventory();
+$('.candy-item').on('click', candyAdd);
+setShelves();
