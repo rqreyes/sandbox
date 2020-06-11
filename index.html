@@ -1,65 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <title>Candy Store</title>
-    <script src="jquery-3.5.1.js"></script>
-    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      h2 {
+        color: purple;
+      }
+    </style>
   </head>
   <body>
-    <div class="header">Candy Inventory</div>
-    <div id="candy-inventory">
-      <div class="candy-bar-wrapper">
-        <div class="candy-item candy-1" data-type="candy-1"></div>
-        <div class="candy-counter" data-type="candy-1"></div>
-      </div>
-      <div class="candy-bar-wrapper">
-        <div class="candy-item candy-2" data-type="candy-2"></div>
-        <div class="candy-counter" data-type="candy-2"></div>
-      </div>
-      <div class="candy-bar-wrapper">
-        <div class="candy-item candy-3" data-type="candy-3"></div>
-        <div class="candy-counter" data-type="candy-3"></div>
-      </div>
-    </div>
-    <div class="header">Candy Shelf</div>
-    <table id="shelves">
-      <!-- <tr class="shelf">
-        <td class="candy-slot"></td>
-        <td class="candy-slot"></td>
-        <td class="candy-slot"></td>
-        <td class="candy-slot"></td>
-        <td class="candy-slot"></td>
-      </tr>
-      <tr class="shelf">
-        <td class="candy-slot"></td>
-        <td class="candy-slot"></td>
-        <td class="candy-slot"></td>
-        <td class="candy-slot"></td>
-        <td class="candy-slot"></td>
-      </tr>
-      <tr class="shelf">
-        <td class="candy-slot"></td>
-        <td class="candy-slot"></td>
-        <td class="candy-slot"></td>
-        <td class="candy-slot"></td>
-        <td class="candy-slot"></td>
-      </tr>
-      <tr class="shelf">
-        <td class="candy-slot"></td>
-        <td class="candy-slot"></td>
-        <td class="candy-slot"></td>
-        <td class="candy-slot"></td>
-        <td class="candy-slot"></td>
-      </tr>
-      <tr class="shelf">
-        <td class="candy-slot"></td>
-        <td class="candy-slot"></td>
-        <td class="candy-slot"></td>
-        <td class="candy-slot"></td>
-        <td class="candy-slot"></td>
-      </tr> -->
-    </table>
+    <user-card
+      name="John Doe"
+      avatar="https://randomuser.me/api/portraits/men/1.jpg"
+    >
+      <div slot="email">johndoe@gmail.com</div>
+      <div slot="phone">555-555-5555</div>
+    </user-card>
+    <user-card
+      name="Jane Doe"
+      avatar="https://randomuser.me/api/portraits/women/1.jpg"
+    >
+      <div slot="email">janedoe@gmail.com</div>
+      <div slot="phone">333-333-3333</div>
+    </user-card>
+
+    <script src="userCard.js"></script>
   </body>
-  <script src="js.js"></script>
 </html>
