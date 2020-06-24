@@ -5,7 +5,7 @@ import axios from 'axios';
 const Search = () => {
   const { setTracks } = useContext(TracksContext);
   const [trackSearch, setTrackSearch] = useState('');
-  const handleSubmit = (evt) => {
+  const handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
     axios

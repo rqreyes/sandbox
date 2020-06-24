@@ -1,10 +1,16 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import axios from 'axios';
 
-export const TracksContext = createContext();
+export const TracksContext = createContext<iTracksContext | undefined>(
+  undefined
+);
 
-const TracksProvider = ({ children }) => {
-  const [tracks, setTracks] = useState([]);
+interface iTracksProviderProps {
+  children: ReactNode;
+}
+
+const TracksProvider: React.FC<iTracksProviderProps> = ({ children }) => {
+  const [tracks, setTracks] = useState<iTrack[]>([]);
 
   useEffect(() => {
     axios
