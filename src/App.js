@@ -1,24 +1,29 @@
 import React from 'react';
+import TracksProvider from './contexts/TracksContext';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import Search from './components/organisms/Search';
+import TrackList from './components/organisms/TrackList';
+import Lyrics from './components/organisms/Lyrics';
 import './App.css';
-import { Provider } from './Context';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Navbar from './components/layout/Navbar';
-import Index from './components/layout/Index';
-import Lyrics from './components/tracks/Lyrics';
 
 function App() {
   return (
-    <Provider>
-      <BrowserRouter>
-        <Navbar />
-        <div className='container'>
+    <div className='App'>
+      <h1>Lyrics Finder</h1>
+      <TracksProvider>
+        <BrowserRouter>
           <Switch>
-            <Route path='/' exact component={Index} />
-            <Route path='/lyrics/track/:id' exact component={Lyrics} />
+            <Route exact path='/'>
+              <Search />
+              <TrackList />
+            </Route>
+            <Route exact path='/lyrics/:id'>
+              <Lyrics />
+            </Route>
           </Switch>
-        </div>
-      </BrowserRouter>
-    </Provider>
+        </BrowserRouter>
+      </TracksProvider>
+    </div>
   );
 }
 
