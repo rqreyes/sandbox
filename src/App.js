@@ -1,102 +1,97 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import styled from 'styled-components';
-import NumBar from './components/NumBar';
+import './App.css';
 
-const StyledApp = styled.div`
-  margin: 10vh auto 0;
+/*
+Instructions:
+Recreate https://dog.ceo/dog-api/breeds-list
+1) Create a dropdown that will show all the main dog breeds
+2) Once a breed is selected, render an image based off the selected breed
+3) When the Fetch! button is clicked, the application should grab and
+render a different image for the selected breed.
+*/
 
-  hr {
-    margin-top: 0;
-  }
-`;
+export default function App() {
+  const [breedList, setBreedList] = useState({});
+  const [breedSelected, setBreedSelected] = useState('');
+  const [breedImg, setBreedImg] = useState('');
 
-const StyledRow = styled.div`
-  display: flex;
-  justify-content: center;
-`;
+  // fetch random breed image
+  const handleClick = async () => {
+    try {
+      const breedImgRes = await axios.get(
+        `https://dog.ceo/api/breed/${breedSelected}/images/random`
+      );
+      setBreedImg(breedImgRes.data.message);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-const StyledYAxisContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-right: 10px;
-  border-right: 1px solid black;
-`;
+  // display breed options including sub-breeds
+  const breedListDisplay = (
+    <select
+      onChange={(evt) => setBreedSelected(evt.target.value.split(' ').pop())}
+    >
+      {Object.keys(breedList).map((breedItem, idx) => {
+        if (breedList[breedItem].length)
+          return breedList[breedItem].map((subBreed, idx) => (
+            <option key={idx}>{`${subBreed} ${breedItem}`}</option>
+          ));
+        else return <option key={idx}>{breedItem}</option>;
+      })}
+    </select>
+  );
 
-const StyledYAxis = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  height: 100px;
-`;
+  // display breed image
+  const breedImgDisplay = breedImg ? (
+    <img src={breedImg} alt='dog breed' />
+  ) : null;
 
-const StyledNumBarContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  border-bottom: 1px solid black;
-  margin-bottom: 9px;
-`;
-
-const StyledXAxisContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-left: 31px;
-`;
-
-const StyledXAxis = styled.span`
-  display: inline-block;
-  width: 50px;
-  text-align: center;
-  margin: 0 5px;
-`;
-
-const App = () => {
-  const [numbers, setNumbers] = useState({});
-
-  const numBarDisplay = Object.keys(numbers).map((num, idx) => (
-    <NumBar key={idx} numCount={numbers[num]} />
-  ));
-  const xAxisDisplay = Object.keys(numbers).map((num, idx) => (
-    <StyledXAxis key={idx}>{num}</StyledXAxis>
-  ));
-
-  let yAxisNums = [];
-  let yMax = Math.ceil(Math.max(...Object.values(numbers)) / 10) * 10;
-  while (yMax >= 0) {
-    yAxisNums.push(yMax);
-    yMax -= 10;
-  }
-  const yAxisDisplay = yAxisNums.map((num, idx) => (
-    <StyledYAxis key={idx}>{num}</StyledYAxis>
-  ));
-
+  // fetch image every time a dropdown option is selected
   useEffect(() => {
     (async () => {
-      const { data } = await axios.get(
-        'https://www.random.org/integers/?num=200&min=1&max=10&col=1&base=10&format=plain&rnd=new'
-      );
+      try {
+        if (breedSelected) {
+          const breedImgRes = await axios.get(
+            `https://dog.ceo/api/breed/${breedSelected}/images/random`
+          );
+          setBreedImg(breedImgRes.data.message);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, [breedSelected]);
 
-      const dataArr = data.split('\n');
-      dataArr.pop();
-      const dataNum = dataArr.reduce((numCount, num) => {
-        numCount[num] = (numCount[num] || 0) + 1;
-        return numCount;
-      }, {});
-
-      setNumbers(dataNum);
+  // fetch to https://dog.ceo/api/breeds/list/all
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await axios.get('https://dog.ceo/api/breeds/list/all');
+        setBreedList(data.message);
+        setBreedSelected(Object.keys(data.message)[0]);
+      } catch (err) {
+        console.log(err);
+      }
     })();
   }, []);
 
   return (
-    <StyledApp>
-      <StyledRow>
-        <StyledYAxisContainer>{yAxisDisplay}</StyledYAxisContainer>
-        <StyledNumBarContainer>{numBarDisplay}</StyledNumBarContainer>
-      </StyledRow>
-      <StyledXAxisContainer>{xAxisDisplay}</StyledXAxisContainer>
-    </StyledApp>
+    <div className='App'>
+      <h1>Breeds List</h1>
+      <h2>
+        https://dog.ceo/api/breed/
+        {breedListDisplay}
+        /images/random
+      </h2>
+      <button
+        onClick={handleClick}
+        style={{ display: 'block', margin: '0 auto 20px' }}
+      >
+        Fetch!
+      </button>
+      {breedImgDisplay}
+    </div>
   );
-};
-
-export default App;
+}
