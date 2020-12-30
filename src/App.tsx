@@ -7,16 +7,18 @@ import axios from 'axios';
 import QuestionItem from './components/QuestionItem';
 import { GlobalStyle, Wrapper } from './App.styles';
 
-type Question = {
+interface Question {
   category: string;
   correct_answer: string;
   difficulty: string;
   incorrect_answers: string[];
   question: string;
   type: string;
-};
+}
 
 const App = () => {
+  const [triviaType, setTriviaType] = useState('');
+  const [triviaStart, setTriviaStart] = useState(false);
   const [questionIdx, setQuestionIdx] = useState(0);
   const [score, setScore] = useState(0);
 
@@ -57,65 +59,68 @@ const App = () => {
   };
 
   const { data, error, mutate } = useSWR(
-    'https://opentdb.com/api.php?amount=10',
+    triviaType === 'random' ? 'https://opentdb.com/api.php?amount=10' : null,
     questionListFetch,
     {
       revalidateOnFocus: false,
     }
   );
 
-  const gameRestart = () => {
+  const triviaStartRandom = () => {
+    setTriviaType('random');
+    setTriviaStart(true);
+  };
+
+  const triviaRestart = () => {
     mutate();
+    setTriviaStart(false);
     setQuestionIdx(0);
     setScore(0);
   };
 
   let quizDisplay;
 
-  if (error) {
+  if (triviaType === 'random' && error) {
     quizDisplay = (
-      <main>
-        <p>
-          Oops! Something went wrong on our end. Please try reloading the page.
-        </p>
-      </main>
+      <p>
+        Oops! Something went wrong on our end. Please try reloading the page.
+      </p>
     );
-  } else if (!data) {
+  } else if (triviaType === 'random' && !data) {
+    quizDisplay = <p>Loading...</p>;
+  } else if (!triviaStart) {
     quizDisplay = (
-      <main>
-        <p>Loading...</p>
-      </main>
+      <>
+        <h2>Select type</h2>
+        <button type='button' onClick={triviaStartRandom}>
+          Random
+        </button>
+        <button type='button'>uwu</button>
+      </>
     );
   } else {
     quizDisplay = (
       <>
-        <main>
-          {questionIdx + 1 === data.length ? (
-            <div className='game-over'>
-              <h2>Game Over</h2>
-              <p>You got {(score / data.length) * 100}% correct</p>
-              <button type='button' onClick={gameRestart}>
-                Play Again?
-              </button>
-            </div>
-          ) : (
-            <>
-              <h2>Question {questionIdx + 1}</h2>
-              <QuestionItem
-                correct_answer={data[questionIdx].correct_answer}
-                answerList={data[questionIdx].answerList}
-                setScore={() => setScore((prev) => prev + 1)}
-                setQuestionIdx={() => setQuestionIdx((prev) => prev + 1)}
-                question={data[questionIdx].question}
-              />
-            </>
-          )}
-        </main>
-        <footer>
-          <p>
-            Score: {score} / {data.length}
-          </p>
-        </footer>
+        {questionIdx + 1 === data.length ? (
+          <div className='game-over'>
+            <h2>Game Over</h2>
+            <p>You got {(score / data.length) * 100}% correct</p>
+            <button type='button' onClick={triviaRestart}>
+              Play again?
+            </button>
+          </div>
+        ) : (
+          <>
+            <h2>Question {questionIdx + 1}</h2>
+            <QuestionItem
+              correct_answer={data[questionIdx].correct_answer}
+              answerList={data[questionIdx].answerList}
+              setScore={() => setScore((prev) => prev + 1)}
+              setQuestionIdx={() => setQuestionIdx((prev) => prev + 1)}
+              question={data[questionIdx].question}
+            />
+          </>
+        )}
       </>
     );
   }
@@ -127,7 +132,17 @@ const App = () => {
         <header>
           <h1>Trivia Time</h1>
         </header>
-        {quizDisplay}
+        <main>{quizDisplay}</main>
+        <footer>
+          <p>
+            Score
+            {data && data.length && (
+              <>
+                : {score} / {data.length}
+              </>
+            )}
+          </p>
+        </footer>
       </Wrapper>
     </>
   );

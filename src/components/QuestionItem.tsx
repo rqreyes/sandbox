@@ -3,13 +3,13 @@ import classNames from 'classnames';
 
 import { Wrapper } from './QuestionItem.styles';
 
-type Props = {
+interface Props {
   answerList: string[];
   correct_answer: string;
   setScore: () => void;
   setQuestionIdx: () => void;
   question: string;
-};
+}
 
 const QuestionItem: React.FC<Props> = ({
   answerList,
