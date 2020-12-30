@@ -5,9 +5,10 @@ import axios from 'axios';
 // import './App.css';
 
 import QuestionItem from './components/QuestionItem';
+import dataUwu from './data/uwu.json';
 import { GlobalStyle, Wrapper } from './App.styles';
 
-interface Question {
+interface QuestionRandom {
   category: string;
   correct_answer: string;
   difficulty: string;
@@ -16,14 +17,21 @@ interface Question {
   type: string;
 }
 
+interface QuestionUwu {
+  answerList: string[];
+  correct_answer: string;
+  question: string;
+}
+
 const App = () => {
   const [triviaType, setTriviaType] = useState('');
   const [triviaStart, setTriviaStart] = useState(false);
+  const [questionListUwu, setQuestionListUwu] = useState<QuestionUwu[]>([]);
   const [questionIdx, setQuestionIdx] = useState(0);
   const [score, setScore] = useState(0);
 
   // shuffle array
-  const arrShuffle = (arr: string[]) => {
+  const arrShuffle = (arr: any[]) => {
     const result = [...arr];
     for (let i = result.length - 1; i > 0; i -= 1) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -36,7 +44,7 @@ const App = () => {
     const {
       data: { results },
     } = await axios.get(url);
-    const questionList = results.map((result: Question) => {
+    const questionList = results.map((result: QuestionRandom) => {
       if (result.type === 'boolean') {
         return {
           answerList: ['True', 'False'],
@@ -58,7 +66,7 @@ const App = () => {
     return questionList;
   };
 
-  const { data, error, mutate } = useSWR(
+  let { data, error, mutate } = useSWR(
     triviaType === 'random' ? 'https://opentdb.com/api.php?amount=10' : null,
     questionListFetch,
     {
@@ -66,13 +74,31 @@ const App = () => {
     }
   );
 
+  if (triviaType === 'uwu') data = questionListUwu;
+
   const triviaStartRandom = () => {
     setTriviaType('random');
     setTriviaStart(true);
   };
 
+  const triviaStartUwu = () => {
+    setTriviaType('uwu');
+    setQuestionListUwu(
+      arrShuffle(
+        dataUwu.results.map((result) => {
+          return {
+            ...result,
+            answerList: arrShuffle(result.answerList),
+          };
+        })
+      )
+    );
+    setTriviaStart(true);
+  };
+
   const triviaRestart = () => {
     mutate();
+    setTriviaType('');
     setTriviaStart(false);
     setQuestionIdx(0);
     setScore(0);
@@ -95,13 +121,15 @@ const App = () => {
         <button type='button' onClick={triviaStartRandom}>
           Random
         </button>
-        <button type='button'>uwu</button>
+        <button type='button' onClick={triviaStartUwu}>
+          uwu
+        </button>
       </>
     );
   } else {
     quizDisplay = (
       <>
-        {questionIdx + 1 === data.length ? (
+        {!data[questionIdx] ? (
           <div className='game-over'>
             <h2>Game Over</h2>
             <p>You got {(score / data.length) * 100}% correct</p>
