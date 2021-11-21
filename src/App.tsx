@@ -1,9 +1,9 @@
 import { Typography } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
 
-import { Header } from "./components/layout/Header";
-import { Home } from "./pages/home";
-import { Welcome } from "./pages/Welcome";
+import { Header } from "components/layout/Header";
+import { Home } from "pages/home";
+import { Welcome } from "pages/Welcome";
 
 const App = () => (
   <>
