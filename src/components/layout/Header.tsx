@@ -5,11 +5,11 @@ import { NavLink } from "react-router-dom";
 
 const StyledNavLink = styled(NavLink)(() => ({
   "&.active": {
-    color: "red"
-  }
+    color: "red",
+  },
 }));
 
-export const Header = () => (
+export const Header = (): JSX.Element => (
   <AppBar>
     <Toolbar>
       <IconButton edge="start" size="large">
@@ -18,10 +18,16 @@ export const Header = () => (
       <NavLink style={{ flexGrow: 1 }} to="/">
         <Typography variant="h1">React Query</Typography>
       </NavLink>
-      <StyledNavLink className={({ isActive }) => (isActive ? "active" : "")} to="/create-book">
+      <StyledNavLink
+        className={({ isActive }) => (isActive ? "active" : "")}
+        to="/create-book"
+      >
         <Button color="inherit">Create Book</Button>
       </StyledNavLink>
-      <StyledNavLink className={({ isActive }) => (isActive ? "active" : "")} to="/login">
+      <StyledNavLink
+        className={({ isActive }) => (isActive ? "active" : "")}
+        to="/login"
+      >
         <Button color="inherit">Log In</Button>
       </StyledNavLink>
     </Toolbar>
