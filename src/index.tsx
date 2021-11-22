@@ -13,25 +13,25 @@ const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          paddingTop: "64px"
-        }
-      }
-    }
+          paddingTop: "64px",
+        },
+      },
+    },
   },
   typography: {
     h1: {
       fontSize: "1rem",
-      fontWeight: 700
-    }
-  }
+      fontWeight: 700,
+    },
+  },
 });
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false
-    }
-  }
+      refetchOnWindowFocus: false,
+    },
+  },
 });
 
 ReactDOM.render(
