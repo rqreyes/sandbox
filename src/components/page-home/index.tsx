@@ -17,7 +17,7 @@ export const Home = (): JSX.Element => {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API_SERVER}/books`
       );
-      console.log("data: ", data);
+
       return data;
     }
   );

@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { Header } from "components/layout/Header";
-import { Home } from "pages/home";
+import { Home } from "pages/Home";
 import { Welcome } from "pages/Welcome";
 import { Route, Routes } from "react-router-dom";
 
