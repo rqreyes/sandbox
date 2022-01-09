@@ -1,1 +1,1 @@
-export const BookAdd = (): JSX.Element => <h1>add book</h1>;
+export const BookAdd = (): JSX.Element => <p>add book</p>;
