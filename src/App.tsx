@@ -1,6 +1,6 @@
 import { Header } from "components/layout/Header";
-import { Login } from "components/page-login";
-import { Home } from "pages/Home";
+import { Home } from "pages/home";
+import { Login } from "pages/login";
 import { Route, Routes } from "react-router-dom";
 
 const App = (): JSX.Element => (
