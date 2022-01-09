@@ -1,10 +1,12 @@
-import { Alert } from "@mui/material";
+import { Alert, List } from "@mui/material";
 import axios from "axios";
-import { Loading } from "components/generic/Loading";
+import { Loading } from "components/Loading";
 import React from "react";
 import { useQuery } from "react-query";
 
-interface BookItem {
+import { BookItem } from "./BookItem";
+
+interface BookItemRes {
   author: string;
   id: string;
   title: string;
@@ -13,10 +15,11 @@ interface BookItem {
 export const BookList = (): JSX.Element => {
   const { data, error, isLoading } = useQuery(
     "books",
-    async (): Promise<Array<BookItem>> => {
+    async (): Promise<BookItemRes[]> => {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API_SERVER}/books`
       );
+      console.log("data: ", data);
 
       return data;
     }
@@ -29,10 +32,12 @@ export const BookList = (): JSX.Element => {
     );
 
   return (
-    <section>
+    <List>
       {React.Children.toArray(
-        data?.map((bookItem: BookItem) => <p>{bookItem.author}</p>)
+        data?.map(({ author, title }) => (
+          <BookItem author={author} title={title} />
+        ))
       )}
-    </section>
+    </List>
   );
 };
