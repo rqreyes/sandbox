@@ -13,7 +13,7 @@
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "**/tsconfig.json"
   },
   "plugins": ["react", "import"],
   "rules": {
@@ -26,7 +26,14 @@
           "caseInsensitive": true,
           "order": "asc"
         },
-        "groups": ["builtin", "external", "index", "sibling", "parent", "internal"],
+        "groups": [
+          "builtin",
+          "external",
+          "index",
+          "sibling",
+          "parent",
+          "internal"
+        ],
         "newlines-between": "always"
       }
     ],
@@ -38,7 +45,10 @@
         "namedComponents": "arrow-function"
       }
     ],
-    "sort-imports": ["error", { "ignoreDeclarationSort": true, "ignoreCase": true }]
+    "sort-imports": [
+      "error",
+      { "ignoreDeclarationSort": true, "ignoreCase": true }
+    ]
   },
   "settings": {
     "react": {
