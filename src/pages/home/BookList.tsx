@@ -1,21 +1,22 @@
-import { Alert, List } from "@mui/material";
+import { List } from "@mui/material";
 import axios from "axios";
+import { Error } from "components/Error";
 import { Loading } from "components/Loading";
 import React from "react";
 import { useQuery } from "react-query";
 
 import { BookItem } from "./BookItem";
 
-interface BookItemRes {
+export interface BookItemData {
   author: string;
   id: string;
   title: string;
 }
 
 export const BookList = (): JSX.Element => {
-  const { data, error, isLoading } = useQuery(
-    "books",
-    async (): Promise<BookItemRes[]> => {
+  const { data, error, isLoading } = useQuery<BookItemData[], Error>(
+    "bookList",
+    async (): Promise<BookItemData[]> => {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API_SERVER}/books`
       );
@@ -26,10 +27,7 @@ export const BookList = (): JSX.Element => {
   );
 
   if (isLoading) return <Loading />;
-  if (error instanceof Error)
-    return (
-      <Alert severity="error">{`An error has occurred: ${error.message}`}</Alert>
-    );
+  if (error) return <Error error={error} />;
 
   return (
     <List>
