@@ -1,4 +1,10 @@
-import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import {
+  Collapse,
+  createTheme,
+  CssBaseline,
+  ThemeProvider,
+} from "@mui/material";
+import { SnackbarProvider } from "notistack";
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
@@ -40,7 +46,9 @@ ReactDOM.render(
       <CssBaseline />
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <App />
+          <SnackbarProvider TransitionComponent={Collapse}>
+            <App />
+          </SnackbarProvider>
         </BrowserRouter>
       </QueryClientProvider>
     </ThemeProvider>

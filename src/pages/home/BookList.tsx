@@ -5,6 +5,7 @@ import { Loading } from "components/Loading";
 import React from "react";
 import { useQuery } from "react-query";
 
+import { BookAdd } from "./BookAdd";
 import { BookItem } from "./BookItem";
 
 export interface BookItemData {
@@ -29,12 +30,15 @@ export const BookList = (): JSX.Element => {
   if (error) return <Error error={error} />;
 
   return (
-    <List>
-      {React.Children.toArray(
-        data?.map(({ author, id, title }) => (
-          <BookItem author={author} id={id} title={title} />
-        ))
-      )}
-    </List>
+    <>
+      <List>
+        {React.Children.toArray(
+          data?.map(({ author, id, title }) => (
+            <BookItem author={author} id={id} title={title} />
+          ))
+        )}
+      </List>
+      <BookAdd />
+    </>
   );
 };

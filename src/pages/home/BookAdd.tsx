@@ -1,7 +1,7 @@
 import { Add } from "@mui/icons-material";
 import { Box, Button, CircularProgress, Grid, TextField } from "@mui/material";
 import axios, { AxiosResponse } from "axios";
-import { Error } from "components/Error";
+import { useSnackbar } from "notistack";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 
@@ -12,6 +12,7 @@ interface FormInput {
 
 export const BookAdd = (): JSX.Element => {
   const queryClient = useQueryClient();
+  const { enqueueSnackbar } = useSnackbar();
   const defaultValues = {
     author: "",
     title: "",
@@ -29,15 +30,20 @@ export const BookAdd = (): JSX.Element => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries("bookList");
+        reset(defaultValues);
+        enqueueSnackbar("Book added successfully", { variant: "success" });
       },
     }
   );
   const onSubmit: SubmitHandler<FormInput> = async (data) => {
-    reset(defaultValues);
     mutate(data);
   };
 
-  if (error) return <Error error={error} />;
+  if (error) {
+    enqueueSnackbar(`An error has occurred: ${error.message}`, {
+      variant: "error",
+    });
+  }
 
   return (
     <Box px={2}>
