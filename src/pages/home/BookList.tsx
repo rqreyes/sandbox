@@ -20,7 +20,6 @@ export const BookList = (): JSX.Element => {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API_SERVER}/books`
       );
-      console.log("data: ", data);
 
       return data;
     }
@@ -32,8 +31,8 @@ export const BookList = (): JSX.Element => {
   return (
     <List>
       {React.Children.toArray(
-        data?.map(({ author, title }) => (
-          <BookItem author={author} title={title} />
+        data?.map(({ author, id, title }) => (
+          <BookItem author={author} id={id} title={title} />
         ))
       )}
     </List>
