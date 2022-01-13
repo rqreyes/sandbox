@@ -1,7 +1,12 @@
-import { Button, Grid, List, Typography } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  Grid,
+  List,
+  Typography,
+} from "@mui/material";
 import axios from "axios";
 import { Error } from "components/Error";
-import { Loading } from "components/Loading";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 
@@ -14,8 +19,13 @@ export interface BookItemData {
   title: string;
 }
 
+export interface FormInput {
+  author: string;
+  title: string;
+}
+
 export const BookList = (): JSX.Element => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenAdd, setIsOpenAdd] = useState(false);
   const { data, error, isLoading } = useQuery<BookItemData[], Error>(
     "bookList",
     async (): Promise<BookItemData[]> => {
@@ -24,38 +34,46 @@ export const BookList = (): JSX.Element => {
       );
 
       return data;
+    },
+    {
+      refetchOnWindowFocus: false,
     }
   );
-
-  const handleOpen = () => {
-    setIsOpen(true);
+  const handleOpenAdd = () => {
+    setIsOpenAdd(true);
   };
-
-  const handleClose = () => {
-    setIsOpen(false);
+  const handleCloseAdd = () => {
+    setIsOpenAdd(false);
   };
-
-  if (isLoading) return <Loading />;
-  if (error) return <Error error={error} />;
 
   return (
     <>
+      {/* handle error */}
+      {error && <Error error={error} />}
+
       <Grid alignItems="center" container justifyContent="space-between">
         <Grid item>
           <Typography variant="h2">Book List</Typography>
         </Grid>
         <Grid item>
-          <Button onClick={handleOpen}>Create</Button>
+          <Button onClick={handleOpenAdd}>Create</Button>
         </Grid>
       </Grid>
-      <List>
-        {React.Children.toArray(
-          data?.map(({ author, id, title }) => (
-            <BookItem author={author} id={id} title={title} />
-          ))
-        )}
-      </List>
-      <BookAddDialog handleClose={handleClose} isOpen={isOpen} />
+      {isLoading ? (
+        <Grid alignItems="center" container justifyContent="center">
+          <CircularProgress sx={{ height: "100px" }} />
+        </Grid>
+      ) : (
+        <List>
+          {React.Children.toArray(
+            data?.map(({ author, id, title }) => (
+              <BookItem author={author} id={id} title={title} />
+            ))
+          )}
+        </List>
+      )}
+
+      <BookAddDialog handleCloseAdd={handleCloseAdd} isOpenAdd={isOpenAdd} />
     </>
   );
 };
