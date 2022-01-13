@@ -1,11 +1,11 @@
-import { List } from "@mui/material";
+import { Button, Grid, List, Typography } from "@mui/material";
 import axios from "axios";
 import { Error } from "components/Error";
 import { Loading } from "components/Loading";
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "react-query";
 
-import { BookAdd } from "./BookAdd";
+import { BookAddDialog } from "./BookAddDialog";
 import { BookItem } from "./BookItem";
 
 export interface BookItemData {
@@ -15,6 +15,7 @@ export interface BookItemData {
 }
 
 export const BookList = (): JSX.Element => {
+  const [isOpen, setIsOpen] = useState(false);
   const { data, error, isLoading } = useQuery<BookItemData[], Error>(
     "bookList",
     async (): Promise<BookItemData[]> => {
@@ -26,11 +27,27 @@ export const BookList = (): JSX.Element => {
     }
   );
 
+  const handleOpen = () => {
+    setIsOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
   if (isLoading) return <Loading />;
   if (error) return <Error error={error} />;
 
   return (
     <>
+      <Grid alignItems="center" container justifyContent="space-between">
+        <Grid item>
+          <Typography variant="h2">Book List</Typography>
+        </Grid>
+        <Grid item>
+          <Button onClick={handleOpen}>Create</Button>
+        </Grid>
+      </Grid>
       <List>
         {React.Children.toArray(
           data?.map(({ author, id, title }) => (
@@ -38,7 +55,7 @@ export const BookList = (): JSX.Element => {
           ))
         )}
       </List>
-      <BookAdd />
+      <BookAddDialog handleClose={handleClose} isOpen={isOpen} />
     </>
   );
 };
