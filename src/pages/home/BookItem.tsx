@@ -10,6 +10,7 @@ import axios, { AxiosResponse } from "axios";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { NavLink } from "react-router-dom";
 
 import { BookItemData } from "./BookList";
 import { BookUpdateDialog } from "./BookUpdateDialog";
@@ -79,9 +80,11 @@ export const BookItem: React.FC<BookItemProps> = ({
           <br />
           {author}
         </ListItemText>
-        <Button>
-          <Info />
-        </Button>
+        <NavLink to={`/book-info/${id}`}>
+          <Button>
+            <Info />
+          </Button>
+        </NavLink>
         <Button onClick={handleOpenUpdate}>
           <Edit />
         </Button>

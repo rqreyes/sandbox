@@ -19,8 +19,8 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const navList = [
-  { label: "Blank", value: "/blank" },
-  { label: "Easter Egg", value: "/easter-egg" },
+  { label: "Blank", link: "/blank" },
+  { label: "Easter Egg", link: "/easter-egg" },
 ];
 
 const StyledNavLink = styled(NavLink)(() => ({
@@ -68,10 +68,10 @@ export const Header = (): JSX.Element => {
             <Grid item>
               {!isScreenSm &&
                 React.Children.toArray(
-                  navList.map(({ label, value }) => (
+                  navList.map(({ label, link }) => (
                     <StyledNavLink
                       className={({ isActive }) => (isActive ? "active" : "")}
-                      to={value}
+                      to={link}
                     >
                       <Button color="inherit">{label}</Button>
                     </StyledNavLink>
@@ -90,12 +90,12 @@ export const Header = (): JSX.Element => {
       <Drawer onClose={handleCloseDrawer} open={isOpenDrawer}>
         <List sx={{ width: 250 }}>
           {React.Children.toArray(
-            navList.map(({ label, value }, index, array) => {
+            navList.map(({ label, link }, index, array) => {
               const lastItem = index === array.length - 1;
 
               return (
                 <>
-                  <StyledNavLink to={value}>
+                  <StyledNavLink to={link}>
                     <ListItem button>
                       <ListItemIcon>
                         {index % 2 === 0 ? <MoveToInbox /> : <Mail />}
