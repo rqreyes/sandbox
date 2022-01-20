@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import { Header } from "components/Header";
 import { Layout } from "components/Layout";
 import { Home } from "pages/home";
@@ -10,10 +11,17 @@ const App = (): JSX.Element => (
     <Layout>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/create-book" element={<h1>create book</h1>} />
-        <Route path="/update-book/:id" element={<h1>update book</h1>} />
+        <Route path="/book-info/:id" element={<h1>Book Info</h1>} />
+        <Route
+          path="/blank"
+          element={<Typography variant="h1">Blank</Typography>}
+        />
+        <Route
+          path="/easter-egg"
+          element={<Typography variant="h1">Easter Egg</Typography>}
+        />
         <Route path="/login" element={<Login />} />
-        <Route path="*" element={<h1>404 page</h1>} />
+        <Route path="*" element={<Typography>404 page</Typography>} />
       </Routes>
     </Layout>
   </>

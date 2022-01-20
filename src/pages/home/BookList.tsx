@@ -53,7 +53,7 @@ export const BookList = (): JSX.Element => {
 
       <Grid alignItems="center" container justifyContent="space-between">
         <Grid item>
-          <Typography variant="h2">Book List</Typography>
+          <Typography variant="h1">Book List</Typography>
         </Grid>
         <Grid item>
           <Button onClick={handleOpenAdd}>Create</Button>

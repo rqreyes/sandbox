@@ -24,12 +24,6 @@ const theme = createTheme({
       },
     },
   },
-  typography: {
-    h1: {
-      fontSize: "1rem",
-      fontWeight: 700,
-    },
-  },
 });
 
 const queryClient = new QueryClient({
