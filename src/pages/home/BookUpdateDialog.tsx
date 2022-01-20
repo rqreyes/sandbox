@@ -80,7 +80,7 @@ export const BookUpdateDialog: React.FC<BookUpdateDialogProps> = ({
         <DialogTitle>Update Book</DialogTitle>
         {isFetchingGet ? (
           <Grid alignItems="center" container justifyContent="center" pb={4}>
-            <CircularProgress sx={{ height: "100px" }} />
+            <CircularProgress sx={{ height: 100 }} />
           </Grid>
         ) : (
           <>

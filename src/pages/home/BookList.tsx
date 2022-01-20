@@ -61,14 +61,23 @@ export const BookList = (): JSX.Element => {
       </Grid>
       {isLoading ? (
         <Grid alignItems="center" container justifyContent="center">
-          <CircularProgress sx={{ height: "100px" }} />
+          <CircularProgress sx={{ height: 100 }} />
         </Grid>
       ) : (
         <List>
           {React.Children.toArray(
-            data?.map(({ author, id, title }) => (
-              <BookItem author={author} id={id} title={title} />
-            ))
+            data?.map(({ author, id, title }, index, array) => {
+              const lastItem = index === array.length - 1;
+
+              return (
+                <BookItem
+                  author={author}
+                  id={id}
+                  lastItem={lastItem}
+                  title={title}
+                />
+              );
+            })
           )}
         </List>
       )}
