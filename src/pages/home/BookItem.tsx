@@ -14,9 +14,14 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { BookItemData } from "./BookList";
 import { BookUpdateDialog } from "./BookUpdateDialog";
 
-export const BookItem: React.FC<BookItemData> = ({
+interface BookItemProps extends BookItemData {
+  lastItem: boolean;
+}
+
+export const BookItem: React.FC<BookItemProps> = ({
   author,
   id,
+  lastItem,
   title,
 }): JSX.Element => {
   const [isOpenUpdate, setIsOpenUpdate] = useState(false);
@@ -81,7 +86,7 @@ export const BookItem: React.FC<BookItemData> = ({
           {isLoadingDelete ? <CircularProgress size={20} /> : <Delete />}
         </Button>
       </ListItem>
-      <Divider />
+      {!lastItem && <Divider />}
 
       <BookUpdateDialog
         handleCloseUpdate={handleCloseUpdate}
