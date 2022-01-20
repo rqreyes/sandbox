@@ -5,13 +5,13 @@ import {
   Button,
   Divider,
   Drawer,
+  Grid,
   IconButton,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   Toolbar,
-  Typography,
   useMediaQuery,
 } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
@@ -19,15 +19,15 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const navList = [
-  { label: "Nav Item 1", value: "/" },
-  { label: "Nav Item 2", value: "/route-2" },
-  { label: "Nav Item 3", value: "/route-3" },
+  { label: "Blank", value: "/blank" },
+  { label: "Easter Egg", value: "/easter-egg" },
 ];
 
 const StyledNavLink = styled(NavLink)(() => ({
+  color: "maroon",
   textDecoration: "none",
 
-  "&.active": {
+  "&:hover, &.active": {
     color: "orange",
   },
 }));
@@ -47,31 +47,44 @@ export const Header = (): JSX.Element => {
     <>
       <AppBar>
         <Toolbar>
-          {isScreenSm && (
-            <IconButton edge="start" onClick={handleOpenDrawer} size="large">
-              <MenuIcon />
-            </IconButton>
-          )}
-
-          <NavLink style={{ flexGrow: 1 }} to="/">
-            <Typography variant="h1">React Query</Typography>
-          </NavLink>
-
-          {!isScreenSm &&
-            navList.map(({ label, value }) => (
+          <Grid container justifyContent="space-between">
+            <Grid item>
+              {isScreenSm && (
+                <IconButton
+                  edge="start"
+                  onClick={handleOpenDrawer}
+                  size="large"
+                >
+                  <MenuIcon />
+                </IconButton>
+              )}
               <StyledNavLink
                 className={({ isActive }) => (isActive ? "active" : "")}
-                to={value}
+                to="/"
               >
-                <Button color="inherit">{label}</Button>
+                <Button color="inherit">React Query</Button>
               </StyledNavLink>
-            ))}
-          <StyledNavLink
-            className={({ isActive }) => (isActive ? "active" : "")}
-            to="/login"
-          >
-            <Button color="inherit">Log In</Button>
-          </StyledNavLink>
+            </Grid>
+            <Grid item>
+              {!isScreenSm &&
+                React.Children.toArray(
+                  navList.map(({ label, value }) => (
+                    <StyledNavLink
+                      className={({ isActive }) => (isActive ? "active" : "")}
+                      to={value}
+                    >
+                      <Button color="inherit">{label}</Button>
+                    </StyledNavLink>
+                  ))
+                )}
+              <StyledNavLink
+                className={({ isActive }) => (isActive ? "active" : "")}
+                to="/login"
+              >
+                <Button color="inherit">Log In</Button>
+              </StyledNavLink>
+            </Grid>
+          </Grid>
         </Toolbar>
       </AppBar>
       <Drawer onClose={handleCloseDrawer} open={isOpenDrawer}>

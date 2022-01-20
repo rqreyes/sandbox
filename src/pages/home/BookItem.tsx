@@ -1,4 +1,4 @@
-import { Delete, Edit } from "@mui/icons-material";
+import { Delete, Edit, Info } from "@mui/icons-material";
 import {
   Button,
   CircularProgress,
@@ -79,6 +79,9 @@ export const BookItem: React.FC<BookItemProps> = ({
           <br />
           {author}
         </ListItemText>
+        <Button>
+          <Info />
+        </Button>
         <Button onClick={handleOpenUpdate}>
           <Edit />
         </Button>
