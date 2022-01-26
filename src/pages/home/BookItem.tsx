@@ -9,7 +9,7 @@ import {
 import axios, { AxiosResponse } from "axios";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { NavLink } from "react-router-dom";
 
 import { BookItemData } from "./BookList";
@@ -28,26 +28,6 @@ export const BookItem: React.FC<BookItemProps> = ({
   const [isOpenUpdate, setIsOpenUpdate] = useState(false);
   const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
-  // get book item for updating
-  const {
-    data: dataGet,
-    error: errorGet,
-    isFetching: isFetchingGet,
-    refetch: refetchGet,
-  } = useQuery<BookItemData, Error>(
-    "bookItem",
-    async (): Promise<BookItemData> => {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_API_SERVER}/books/${id}`
-      );
-
-      return data;
-    },
-    {
-      enabled: false,
-      refetchOnWindowFocus: false,
-    }
-  );
   // delete book item
   const { isLoading: isLoadingDelete, mutate: mutateDelete } = useMutation<
     AxiosResponse,
@@ -65,7 +45,6 @@ export const BookItem: React.FC<BookItemProps> = ({
     },
   });
   const handleOpenUpdate = () => {
-    refetchGet();
     setIsOpenUpdate(true);
   };
   const handleCloseUpdate = () => {
@@ -96,10 +75,7 @@ export const BookItem: React.FC<BookItemProps> = ({
 
       <BookUpdateDialog
         handleCloseUpdate={handleCloseUpdate}
-        dataGet={dataGet}
-        errorGet={errorGet}
         id={id}
-        isFetchingGet={isFetchingGet}
         isOpenUpdate={isOpenUpdate}
       />
     </>
