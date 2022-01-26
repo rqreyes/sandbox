@@ -9,6 +9,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import { BrowserRouter } from "react-router-dom";
 
 import App from "./App";
@@ -42,6 +43,7 @@ ReactDOM.render(
         <BrowserRouter>
           <SnackbarProvider TransitionComponent={Collapse}>
             <App />
+            <ReactQueryDevtools initialIsOpen={false} />
           </SnackbarProvider>
         </BrowserRouter>
       </QueryClientProvider>
