@@ -5,10 +5,13 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Paper,
 } from "@mui/material";
 import axios, { AxiosResponse } from "axios";
 import { useSnackbar } from "notistack";
 import { useMutation, useQueryClient } from "react-query";
+
+import { BookItemData } from "./BookList";
 
 interface BookDeleteDialogProps {
   handleCloseDelete: () => void;
@@ -23,6 +26,13 @@ export const BookDeleteDialog: React.FC<BookDeleteDialogProps> = ({
 }) => {
   const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
+  const bookList = queryClient.getQueryData<BookItemData[]>("bookList");
+  let bookItem = { author: "", id: "", title: "" };
+  if (bookList) {
+    const bookItemFound = bookList.find((bookItem) => bookItem.id === id);
+
+    if (bookItemFound) bookItem = bookItemFound;
+  }
   const { isLoading: isLoadingDelete, mutate: mutateDelete } = useMutation<
     AxiosResponse,
     Error,
@@ -43,7 +53,19 @@ export const BookDeleteDialog: React.FC<BookDeleteDialogProps> = ({
   return (
     <Dialog onClose={handleCloseDelete} open={isOpenDelete}>
       <DialogTitle>Delete Book</DialogTitle>
-      <DialogContent>Are you sure?</DialogContent>
+      <DialogContent>
+        Are you sure you want to permanently delete this book?
+        <Paper
+          sx={{
+            mt: 2,
+            p: 2,
+          }}
+        >
+          <strong>{bookItem.title}</strong>
+          <br />
+          {bookItem.author}
+        </Paper>
+      </DialogContent>
       <DialogActions>
         <Button onClick={handleCloseDelete}>Cancel</Button>
         <Button onClick={() => mutateDelete(id)}>
