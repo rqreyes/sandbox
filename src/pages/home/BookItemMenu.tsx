@@ -9,24 +9,18 @@ import { BookUpdateDialog } from "./BookUpdateDialog";
 interface BookItemMenuProps {
   id: string;
 }
+type Dialog = "update" | "delete";
 
 export const BookItemMenu: React.FC<BookItemMenuProps> = ({
   id,
 }): JSX.Element => {
-  const [isOpenUpdate, setIsOpenUpdate] = useState(false);
-  const [isOpenDelete, setIsOpenDelete] = useState(false);
+  const [isOpenDialog, setIsOpenDialog] = useState({
+    delete: false,
+    update: false,
+  });
   const navigate = useNavigate();
-  const handleOpenUpdate = () => {
-    setIsOpenUpdate(true);
-  };
-  const handleCloseUpdate = () => {
-    setIsOpenUpdate(false);
-  };
-  const handleOpenDelete = () => {
-    setIsOpenDelete(true);
-  };
-  const handleCloseDelete = () => {
-    setIsOpenDelete(false);
+  const handleToggleDialog = (dialog: Dialog, isOpen: boolean) => {
+    setIsOpenDialog((prevState) => ({ ...prevState, [dialog]: isOpen }));
   };
 
   return (
@@ -41,13 +35,13 @@ export const BookItemMenu: React.FC<BookItemMenuProps> = ({
         </ListItemIcon>
         <ListItemText>More Info</ListItemText>
       </MenuItem>
-      <MenuItem onClick={handleOpenUpdate}>
+      <MenuItem onClick={() => handleToggleDialog("update", true)}>
         <ListItemIcon>
           <Update />
         </ListItemIcon>
         <ListItemText>Update</ListItemText>
       </MenuItem>
-      <MenuItem onClick={handleOpenDelete}>
+      <MenuItem onClick={() => handleToggleDialog("delete", true)}>
         <ListItemIcon>
           <Delete />
         </ListItemIcon>
@@ -56,16 +50,16 @@ export const BookItemMenu: React.FC<BookItemMenuProps> = ({
 
       {/* update dialog */}
       <BookUpdateDialog
-        handleCloseUpdate={handleCloseUpdate}
+        handleCloseUpdate={() => handleToggleDialog("update", false)}
         id={id}
-        isOpenUpdate={isOpenUpdate}
+        isOpenUpdate={isOpenDialog.update}
       />
 
       {/* delete dialog */}
       <BookDeleteDialog
-        handleCloseDelete={handleCloseDelete}
+        handleCloseDelete={() => handleToggleDialog("delete", false)}
         id={id}
-        isOpenDelete={isOpenDelete}
+        isOpenDelete={isOpenDialog.delete}
       />
     </>
   );
