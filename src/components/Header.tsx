@@ -2,15 +2,16 @@ import { Mail, MoveToInbox } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
   AppBar,
+  Box,
   Button,
   Divider,
   Drawer,
-  Grid,
   IconButton,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
+  Stack,
   Toolbar,
   useMediaQuery,
 } from "@mui/material";
@@ -47,8 +48,12 @@ export const Header = (): JSX.Element => {
     <>
       <AppBar>
         <Toolbar>
-          <Grid container justifyContent="space-between">
-            <Grid item>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            sx={{ width: "100%" }}
+          >
+            <Box>
               {isScreenSm && (
                 <IconButton
                   edge="start"
@@ -64,8 +69,8 @@ export const Header = (): JSX.Element => {
               >
                 <Button color="inherit">React Query</Button>
               </StyledNavLink>
-            </Grid>
-            <Grid item>
+            </Box>
+            <Box>
               {!isScreenSm &&
                 React.Children.toArray(
                   navList.map(({ label, link }) => (
@@ -83,8 +88,8 @@ export const Header = (): JSX.Element => {
               >
                 <Button color="inherit">Log In</Button>
               </StyledNavLink>
-            </Grid>
-          </Grid>
+            </Box>
+          </Stack>
         </Toolbar>
       </AppBar>
       <Drawer onClose={handleCloseDrawer} open={isOpenDrawer}>

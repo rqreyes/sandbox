@@ -1,6 +1,11 @@
 import { Container, Paper } from "@mui/material";
+import React from "react";
 
-export const Layout: React.FC = ({ children }): JSX.Element => (
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+export const Layout: React.FC<LayoutProps> = ({ children }) => (
   <Container>
     <Paper
       sx={{
