@@ -30,8 +30,8 @@ export const BookUpdateDialog: React.FC<BookUpdateDialogProps> = ({
   const { enqueueSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
   const defaultValues = {
-    id: "",
     author: "",
+    id: "",
     title: "",
   };
   const { control, handleSubmit, reset } = useForm({ defaultValues });
@@ -66,8 +66,8 @@ export const BookUpdateDialog: React.FC<BookUpdateDialogProps> = ({
     const defaultBookItemData = defaultBookListData
       ? defaultBookListData.find((bookItem: BookItemData) => bookItem.id === id)
       : {
-          id: "",
           author: "",
+          id: "",
           title: "",
         };
 
