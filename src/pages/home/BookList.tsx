@@ -1,8 +1,9 @@
 import {
+  Box,
   Button,
   CircularProgress,
-  Grid,
   List,
+  Stack,
   Typography,
 } from "@mui/material";
 import axios from "axios";
@@ -51,22 +52,32 @@ export const BookList = (): JSX.Element => {
       {/* handle error */}
       {error && <Error error={error} />}
 
-      <Grid alignItems="center" container justifyContent="space-between">
-        <Grid item>
+      <Stack
+        alignItems="center"
+        direction={"row"}
+        justifyContent="space-between"
+        sx={{ width: "100%" }}
+      >
+        <Box>
           <Typography variant="h1">Book List</Typography>
-        </Grid>
-        <Grid item>
+        </Box>
+        <Box>
           <Button onClick={handleOpenAdd}>Create</Button>
-        </Grid>
-      </Grid>
-      {isLoading ? (
-        <Grid alignItems="center" container justifyContent="center">
+        </Box>
+      </Stack>
+
+      {isLoading && (
+        <Stack alignItems="center" justifyContent="center">
           <CircularProgress sx={{ height: 100 }} />
-        </Grid>
-      ) : (
+        </Stack>
+      )}
+      {data && data.length === 0 && (
+        <Typography variant="body1">No books are available.</Typography>
+      )}
+      {data && data.length > 0 && (
         <List>
           {React.Children.toArray(
-            data?.map(({ author, id, title }, index, array) => {
+            data.map(({ author, id, title }, index, array) => {
               const lastItem = index === array.length - 1;
 
               return (
@@ -82,6 +93,7 @@ export const BookList = (): JSX.Element => {
         </List>
       )}
 
+      {/* add dialog */}
       <BookAddDialog handleCloseAdd={handleCloseAdd} isOpenAdd={isOpenAdd} />
     </>
   );
