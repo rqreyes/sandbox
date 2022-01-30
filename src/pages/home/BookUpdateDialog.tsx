@@ -78,49 +78,47 @@ export const BookUpdateDialog: React.FC<BookUpdateDialogProps> = ({
     <Dialog onClose={handleCloseUpdate} open={isOpenUpdate}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogTitle>Update Book</DialogTitle>
-        <>
-          <DialogContent>
-            <Controller
-              control={control}
-              name="title"
-              render={({ field }) => (
-                <TextField
-                  fullWidth
-                  label="Title"
-                  required
-                  variant="standard"
-                  {...field}
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="author"
-              render={({ field }) => (
-                <TextField
-                  fullWidth
-                  label="Author"
-                  required
-                  variant="standard"
-                  {...field}
-                />
-              )}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button type="submit">
-              {isLoadingUpdate ? <CircularProgress size={20} /> : "Update"}
-            </Button>
-            <Button
-              onClick={() => {
-                setIsCancel((prev) => !prev);
-                handleCloseUpdate();
-              }}
-            >
-              Cancel
-            </Button>
-          </DialogActions>
-        </>
+        <DialogContent>
+          <Controller
+            control={control}
+            name="title"
+            render={({ field }) => (
+              <TextField
+                fullWidth
+                label="Title"
+                required
+                variant="standard"
+                {...field}
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name="author"
+            render={({ field }) => (
+              <TextField
+                fullWidth
+                label="Author"
+                required
+                variant="standard"
+                {...field}
+              />
+            )}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setIsCancel((prev) => !prev);
+              handleCloseUpdate();
+            }}
+          >
+            Cancel
+          </Button>
+          <Button type="submit">
+            {isLoadingUpdate ? <CircularProgress size={20} /> : "Update"}
+          </Button>
+        </DialogActions>
       </form>
     </Dialog>
   );
