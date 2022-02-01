@@ -65,6 +65,7 @@ export const BookAddDialog: React.FC<BookAddDialogProps> = ({
               <TextField
                 fullWidth
                 label="Title"
+                required
                 variant="standard"
                 {...field}
               />
@@ -77,6 +78,7 @@ export const BookAddDialog: React.FC<BookAddDialogProps> = ({
               <TextField
                 fullWidth
                 label="Author"
+                required
                 variant="standard"
                 {...field}
               />
