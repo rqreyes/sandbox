@@ -2,33 +2,36 @@ import express from "express";
 import { nanoid } from "nanoid";
 
 export const booksRouter = express.Router();
-
-const idLength = 8;
 const DELAY = 2000;
 
+// get book list
 booksRouter.get("/", async (req, res) => {
   const { books } = req.app.db.data;
 
-  res.send(books);
-});
-
-booksRouter.get("/:id", async (req, res) => {
-  const { books } = req.app.db.data;
-
-  books.find((book) => book.id === req.params.id);
-
   setTimeout(() => {
-    res.send(book);
+    res.send(books);
   }, DELAY);
 });
 
+// get book by ID
+booksRouter.get("/:id", async (req, res) => {
+  const { books } = req.app.db.data;
+  const bookFound = books.find((book) => book.id === req.params.id);
+
+  setTimeout(() => {
+    if (bookFound === undefined) res.sendStatus(404);
+    res.send(bookFound);
+  }, DELAY);
+});
+
+// create book
 booksRouter.post("/", async (req, res) => {
   const { books } = req.app.db.data;
 
   try {
     const book = {
       author: req.body.author,
-      id: nanoid(idLength),
+      id: nanoid(),
       title: req.body.title,
     };
 
@@ -43,7 +46,8 @@ booksRouter.post("/", async (req, res) => {
   }
 });
 
-booksRouter.put("/:id", async (req, res) => {
+// update book by ID
+booksRouter.patch("/:id", async (req, res) => {
   const { books } = req.app.db.data;
 
   try {
@@ -73,6 +77,7 @@ booksRouter.put("/:id", async (req, res) => {
   }
 });
 
+// delete book by ID
 booksRouter.delete("/:id", async (req, res) => {
   const { books } = req.app.db.data;
   const booksFiltered = books.filter((book) => book.id !== req.params.id);
