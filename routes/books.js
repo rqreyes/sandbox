@@ -2,7 +2,9 @@ import express from "express";
 import { nanoid } from "nanoid";
 
 export const booksRouter = express.Router();
+
 const idLength = 8;
+const DELAY = 2000;
 
 booksRouter.get("/", async (req, res) => {
   const { books } = req.app.db.data;
@@ -15,7 +17,9 @@ booksRouter.get("/:id", async (req, res) => {
 
   books.find((book) => book.id === req.params.id);
 
-  res.send(book);
+  setTimeout(() => {
+    res.send(book);
+  }, DELAY);
 });
 
 booksRouter.post("/", async (req, res) => {
@@ -31,7 +35,9 @@ booksRouter.post("/", async (req, res) => {
     books.push(book);
     await req.app.db.write();
 
-    res.send(book);
+    setTimeout(() => {
+      res.send(book);
+    }, DELAY);
   } catch (error) {
     return res.status(500).send(error);
   }
@@ -59,7 +65,9 @@ booksRouter.put("/:id", async (req, res) => {
     req.app.db.data = { books: booksUpdated };
     await req.app.db.write();
 
-    res.send(bookUpdated);
+    setTimeout(() => {
+      res.send(bookUpdated);
+    }, DELAY);
   } catch (error) {
     return res.status(500).send(error);
   }
@@ -72,5 +80,7 @@ booksRouter.delete("/:id", async (req, res) => {
   req.app.db.data = { books: booksFiltered };
   await req.app.db.write();
 
-  res.sendStatus(200);
+  setTimeout(() => {
+    res.sendStatus(200);
+  }, DELAY);
 });
